@@ -1,0 +1,42 @@
+{
+  "name": "每日交易复盘 + 执行约束系统",
+  "short_name": "交易复盘",
+  "description": "给短线交易者用的纪律执行和复盘系统，重点是控制情绪、执行规则，而不是预测行情。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#15120f",
+  "theme_color": "#1b130f",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "完整复盘",
+      "short_name": "完整页",
+      "url": "./index.html",
+      "description": "打开完整交易复盘页"
+    },
+    {
+      "name": "3 分钟极速复盘",
+      "short_name": "极速页",
+      "url": "./quick.html",
+      "description": "打开手机更顺手的极速复盘页"
+    }
+  ]
+}

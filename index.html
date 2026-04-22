@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1b130f" />
+    <title>每日交易复盘 + 执行约束系统</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-grid"></div>
+    <main class="app-shell">
+      <section class="hero-card">
+        <div class="hero-copy">
+          <p class="eyebrow">Discipline First</p>
+          <h1>每日交易复盘 + 执行约束系统</h1>
+          <p class="hero-text">
+            这不是预测行情的面板，而是一套控制情绪、限制冲动、把每次出手都关进纪律笼子的系统。
+          </p>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric-box">
+            <span class="metric-label">单笔上限</span>
+            <strong id="position-limit">100u</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">止损风险</span>
+            <strong id="loss-limit">10u</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">先落袋</span>
+            <strong id="take-profit-lock">15u</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel top-panel">
+        <div class="panel-title-row">
+          <h2>今日设置</h2>
+          <div class="title-actions">
+            <button id="simple-mode-toggle" type="button" class="ghost-button mode-toggle">极简模式：关</button>
+            <span class="status-pill" id="save-status">未保存</span>
+          </div>
+        </div>
+        <div class="field-grid compact-grid">
+          <label class="field">
+            <span>复盘日期</span>
+            <input id="review-date" type="date" />
+          </label>
+          <label class="field">
+            <span>账户规模（U）</span>
+            <input id="account-size" type="number" min="0" step="10" value="1000" />
+          </label>
+          <div class="field field-static">
+            <span>纪律提示</span>
+            <strong>先守纪律，再谈收益</strong>
+          </div>
+        </div>
+        <div class="quick-rule-strip">
+          <span class="quick-rule-pill">单笔 ≤ 10%</span>
+          <span class="quick-rule-pill">止损 = -10%</span>
+          <span class="quick-rule-pill">+30% 卖一半</span>
+          <span class="quick-rule-pill">禁止追涨加仓</span>
+        </div>
+        <div class="entry-strip">
+          <a class="ghost-button link-button" href="./quick.html">3 分钟极速页</a>
+          <button id="install-app" type="button" class="ghost-button">安装 App</button>
+          <span id="install-status" class="install-status">可加到主屏幕或桌面</span>
+        </div>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel side-panel">
+          <div class="panel-title-row">
+            <h2>硬规则</h2>
+          </div>
+          <ul class="rule-list">
+            <li>单笔仓位 ≤ 10%</li>
+            <li>止损固定 = -10%</li>
+            <li>止盈 = +30% 卖一半</li>
+            <li>禁止追涨加仓</li>
+          </ul>
+          <section class="sizing-section">
+            <h3>土狗分仓档位表</h3>
+            <div class="sizing-grid">
+              <article class="tier-card" data-tier-ratio="0.02">
+                <div class="tier-top">
+                  <strong class="tier-amount">20u</strong>
+                  <span class="tier-tag">观察仓</span>
+                </div>
+                <p class="tier-guidance">只用于新题材首笔试错，或者流动性一般时先摸底。</p>
+                <div class="tier-notes">
+                  <span class="tier-risk">止损约 2u</span>
+                  <span class="tier-profit">先落袋约 3u</span>
+                </div>
+              </article>
+              <article class="tier-card" data-tier-ratio="0.03">
+                <div class="tier-top">
+                  <strong class="tier-amount">30u</strong>
+                  <span class="tier-tag">轻仓跟随</span>
+                </div>
+                <p class="tier-guidance">有热点有量，但位置不够舒服，或者你对题材还没完全看透。</p>
+                <div class="tier-notes">
+                  <span class="tier-risk">止损约 3u</span>
+                  <span class="tier-profit">先落袋约 4u</span>
+                </div>
+              </article>
+              <article class="tier-card" data-tier-ratio="0.05">
+                <div class="tier-top">
+                  <strong class="tier-amount">50u</strong>
+                  <span class="tier-tag">标准仓</span>
+                </div>
+                <p class="tier-guidance">热点、放量、上涨趋势三项都在，但还不够到满档级别。</p>
+                <div class="tier-notes">
+                  <span class="tier-risk">止损约 5u</span>
+                  <span class="tier-profit">先落袋约 8u</span>
+                </div>
+              </article>
+              <article class="tier-card" data-tier-ratio="0.1">
+                <div class="tier-top">
+                  <strong class="tier-amount">100u</strong>
+                  <span class="tier-tag">满档</span>
+                </div>
+                <p class="tier-guidance">只给龙头级 setup，且必须是放量、强趋势、回踩确认，不接受冲动追单。</p>
+                <div class="tier-notes">
+                  <span class="tier-risk">止损约 10u</span>
+                  <span class="tier-profit">先落袋约 15u</span>
+                </div>
+              </article>
+            </div>
+          </section>
+          <div class="reminder-card simple-hide">
+            <h3>09:00 浏览器提醒</h3>
+            <p>页面保持打开时，会在每天 09:00 弹出浏览器提醒。</p>
+            <button id="enable-notification" type="button" class="ghost-button">开启提醒权限</button>
+            <p id="notification-state" class="muted-text">尚未授权通知</p>
+          </div>
+          <div class="reminder-card warning-card simple-hide">
+            <h3>处罚规则</h3>
+            <p>1 次违规降仓，2 次违规限单，3 次违规或 0 分情绪单直接停手。</p>
+          </div>
+        </section>
+
+        <section class="panel main-panel">
+          <div class="panel-title-row">
+            <h2>复盘填写区</h2>
+          </div>
+
+          <section class="subsection">
+            <h3>1. 今日是否违规</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>是否追高</span>
+                <select id="violation-chase-high">
+                  <option value="no">否</option>
+                  <option value="yes">是</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否未执行止损</span>
+                <select id="violation-no-stop">
+                  <option value="no">否</option>
+                  <option value="yes">是</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否情绪下单</span>
+                <select id="violation-emotional">
+                  <option value="no">否</option>
+                  <option value="yes">是</option>
+                </select>
+              </label>
+              <div class="field field-static">
+                <span>今日是否违规</span>
+                <strong id="overall-violation">否</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="subsection">
+            <h3>2. 今日交易是否符合策略</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>是否只做热点</span>
+                <select id="strategy-hot">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否有成交量</span>
+                <select id="strategy-volume">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否在上涨趋势中入场</span>
+                <select id="strategy-trend">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <div class="field field-static">
+                <span>策略结论</span>
+                <strong id="strategy-result">符合</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="subsection">
+            <div class="panel-title-row inner-title-row">
+              <h3>3. 每笔交易评分</h3>
+              <button id="add-trade" type="button" class="ghost-button">新增一笔</button>
+            </div>
+            <div id="trade-list" class="trade-list"></div>
+            <div class="score-bar">
+              <div>
+                <span class="muted-text">今日平均分</span>
+                <strong id="average-score">0</strong>
+              </div>
+              <div>
+                <span class="muted-text">0 分情绪单</span>
+                <strong id="zero-score-count">0</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="subsection">
+            <h3>4. 风控检查</h3>
+            <div class="field-grid">
+              <label class="field">
+                <span>单笔仓位是否 ≤ 10%</span>
+                <select id="risk-position">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>单笔是否 ≤ 上限金额</span>
+                <select id="risk-position-amount">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>每笔是否执行 -10% 止损</span>
+                <select id="risk-stop-loss">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>实际亏损是否控制在理论上限内</span>
+                <select id="risk-loss-cap">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否执行 +30% 卖一半</span>
+                <select id="risk-take-profit">
+                  <option value="yes">是</option>
+                  <option value="no">否</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>是否存在追涨加仓</span>
+                <select id="risk-chase-add">
+                  <option value="no">否</option>
+                  <option value="yes">是</option>
+                </select>
+              </label>
+            </div>
+          </section>
+
+          <section class="subsection">
+            <h3>5. 今日总结</h3>
+            <label class="field">
+              <span>一句话总结</span>
+              <textarea id="daily-summary" rows="2" placeholder="今天最大的问题不是行情，而是我的执行。"></textarea>
+            </label>
+          </section>
+
+          <section class="subsection">
+            <h3>6. 明日计划</h3>
+            <label class="field">
+              <span>必须写成“明天我只做：____”</span>
+              <input id="tomorrow-plan" type="text" placeholder="明天我只做：强势热点里放量突破后的第一笔回踩。" />
+            </label>
+          </section>
+        </section>
+
+        <section class="panel outcome-panel">
+          <div class="panel-title-row">
+            <h2>处罚与导出</h2>
+          </div>
+          <div class="penalty-box">
+            <span class="muted-text">违规次数</span>
+            <strong id="violation-count">0</strong>
+          </div>
+          <div class="penalty-box danger-box">
+            <span class="muted-text">今日处罚</span>
+            <strong id="penalty-today">无</strong>
+          </div>
+          <div class="penalty-box">
+            <span class="muted-text">明日执行限制</span>
+            <strong id="penalty-next-day">正常执行：单笔 ≤ 10%</strong>
+          </div>
+          <div class="action-row">
+            <button id="save-review" type="button" class="primary-button">保存到浏览器</button>
+            <button id="export-markdown" type="button" class="ghost-button">导出 Markdown</button>
+            <button id="reset-review" type="button" class="ghost-button danger-action">清空今日</button>
+          </div>
+          <section class="subsection preview-section simple-hide">
+            <h3>导出预览</h3>
+            <pre id="markdown-preview"></pre>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <div class="mobile-action-bar">
+      <button id="mobile-mode-toggle" type="button" class="ghost-button">极简模式</button>
+      <button id="mobile-add-trade" type="button" class="ghost-button">+1 笔</button>
+      <button id="mobile-save" type="button" class="primary-button">保存</button>
+    </div>
+
+    <template id="trade-row-template">
+      <article class="trade-card">
+        <div class="trade-card-header">
+          <strong class="trade-number">交易 1</strong>
+          <button type="button" class="remove-trade">删除</button>
+        </div>
+        <div class="field-grid trade-grid">
+          <label class="field">
+            <span>标的 / 方向</span>
+            <input class="trade-symbol" type="text" placeholder="PEPE / 做多" />
+          </label>
+          <label class="field">
+            <span>入场理由</span>
+            <input class="trade-reason" type="text" placeholder="热点、放量、回踩后承接" />
+          </label>
+          <label class="field">
+            <span>是否按规则执行</span>
+            <input class="trade-execution" type="text" placeholder="完全按规则 / 部分违规 / 情绪交易" />
+          </label>
+          <label class="field">
+            <span>评分</span>
+            <select class="trade-score">
+              <option value="100">100</option>
+              <option value="60">60</option>
+              <option value="0">0</option>
+            </select>
+          </label>
+          <label class="field trade-note-field">
+            <span>备注</span>
+            <input class="trade-note" type="text" placeholder="没等确认，靠冲动提前进。" />
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+  </html>

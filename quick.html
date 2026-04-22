@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1b130f" />
+    <title>3 分钟极速复盘</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="quick-page-body">
+    <div class="bg-grid"></div>
+    <main class="app-shell quick-shell">
+      <section class="panel quick-top-panel">
+        <div class="panel-title-row quick-title-row">
+          <div class="quick-title-copy">
+            <p class="eyebrow">3 Minute Review</p>
+            <h1>3 分钟极速复盘页</h1>
+            <p class="hero-text">只保留必须记录的纪律项，三分钟内填完，别给情绪找理由。</p>
+          </div>
+          <div class="title-actions quick-top-actions">
+            <a class="ghost-button link-button" href="./index.html">完整页</a>
+            <button id="quick-install-app" type="button" class="ghost-button">安装 App</button>
+          </div>
+        </div>
+        <div class="quick-head-metrics">
+          <div class="metric-box">
+            <span class="metric-label">平均分</span>
+            <strong id="quick-average-score">0</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">违规次数</span>
+            <strong id="quick-violation-count">0</strong>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">次日限制</span>
+            <strong id="quick-next-day-limit">正常</strong>
+          </div>
+        </div>
+        <div class="entry-strip">
+          <span id="quick-install-status" class="install-status">可加到主屏幕或桌面</span>
+        </div>
+      </section>
+
+      <section class="panel quick-section">
+        <div class="panel-title-row">
+          <h2>基础设置</h2>
+        </div>
+        <div class="field-grid compact-grid quick-setup-grid">
+          <label class="field">
+            <span>复盘日期</span>
+            <input id="quick-date" type="date" />
+          </label>
+          <label class="field">
+            <span>账户规模（U）</span>
+            <input id="quick-account-size" type="number" min="0" step="10" value="1000" />
+          </label>
+          <label class="field">
+            <span>今日交易笔数</span>
+            <select id="quick-trade-count">
+              <option value="0">0 笔</option>
+              <option value="1">1 笔</option>
+              <option value="2">2 笔</option>
+              <option value="3">3 笔</option>
+            </select>
+          </label>
+        </div>
+        <div class="quick-rule-strip">
+          <span class="quick-rule-pill">单笔 ≤ 10%</span>
+          <span class="quick-rule-pill">止损 = -10%</span>
+          <span class="quick-rule-pill">+30% 卖一半</span>
+          <span class="quick-rule-pill">禁止追涨加仓</span>
+        </div>
+      </section>
+
+      <div class="quick-grid">
+        <section class="panel quick-section">
+          <div class="panel-title-row">
+            <h2>今日是否违规</h2>
+            <span class="status-pill" id="quick-overall-violation">否</span>
+          </div>
+          <div class="quick-checklist">
+            <div class="quick-item">
+              <span>是否追高</span>
+              <input id="quick-violation-chase" type="hidden" value="no" />
+              <div class="toggle-group" data-target="quick-violation-chase">
+                <button type="button" class="toggle-button is-active" data-value="no">否</button>
+                <button type="button" class="toggle-button" data-value="yes">是</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否未执行止损</span>
+              <input id="quick-violation-stop" type="hidden" value="no" />
+              <div class="toggle-group" data-target="quick-violation-stop">
+                <button type="button" class="toggle-button is-active" data-value="no">否</button>
+                <button type="button" class="toggle-button" data-value="yes">是</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否情绪下单</span>
+              <input id="quick-violation-emotional" type="hidden" value="no" />
+              <div class="toggle-group" data-target="quick-violation-emotional">
+                <button type="button" class="toggle-button is-active" data-value="no">否</button>
+                <button type="button" class="toggle-button" data-value="yes">是</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel quick-section">
+          <div class="panel-title-row">
+            <h2>策略是否成立</h2>
+            <span class="status-pill" id="quick-strategy-result">符合</span>
+          </div>
+          <div class="quick-checklist">
+            <div class="quick-item">
+              <span>是否只做热点</span>
+              <input id="quick-strategy-hot" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-strategy-hot">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否有成交量</span>
+              <input id="quick-strategy-volume" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-strategy-volume">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否在上涨趋势中入场</span>
+              <input id="quick-strategy-trend" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-strategy-trend">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel quick-section">
+          <div class="panel-title-row">
+            <h2>每笔交易评分</h2>
+          </div>
+          <div id="quick-score-list" class="quick-score-list">
+            <div class="quick-score-item" data-trade-index="0">
+              <span>交易 1</span>
+              <input id="quick-trade-score-0" type="hidden" value="100" />
+              <div class="toggle-group score-toggle" data-target="quick-trade-score-0">
+                <button type="button" class="toggle-button is-active" data-value="100">100</button>
+                <button type="button" class="toggle-button" data-value="60">60</button>
+                <button type="button" class="toggle-button" data-value="0">0</button>
+              </div>
+            </div>
+            <div class="quick-score-item" data-trade-index="1">
+              <span>交易 2</span>
+              <input id="quick-trade-score-1" type="hidden" value="100" />
+              <div class="toggle-group score-toggle" data-target="quick-trade-score-1">
+                <button type="button" class="toggle-button is-active" data-value="100">100</button>
+                <button type="button" class="toggle-button" data-value="60">60</button>
+                <button type="button" class="toggle-button" data-value="0">0</button>
+              </div>
+            </div>
+            <div class="quick-score-item" data-trade-index="2">
+              <span>交易 3</span>
+              <input id="quick-trade-score-2" type="hidden" value="100" />
+              <div class="toggle-group score-toggle" data-target="quick-trade-score-2">
+                <button type="button" class="toggle-button is-active" data-value="100">100</button>
+                <button type="button" class="toggle-button" data-value="60">60</button>
+                <button type="button" class="toggle-button" data-value="0">0</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel quick-section">
+          <div class="panel-title-row">
+            <h2>风控勾选</h2>
+          </div>
+          <div class="quick-checklist">
+            <div class="quick-item">
+              <span>单笔是否仍 ≤ 上限</span>
+              <input id="quick-risk-position" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-risk-position">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否执行 -10% 止损</span>
+              <input id="quick-risk-stop" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-risk-stop">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否执行 +30% 卖一半</span>
+              <input id="quick-risk-profit" type="hidden" value="yes" />
+              <div class="toggle-group" data-target="quick-risk-profit">
+                <button type="button" class="toggle-button is-active" data-value="yes">是</button>
+                <button type="button" class="toggle-button" data-value="no">否</button>
+              </div>
+            </div>
+            <div class="quick-item">
+              <span>是否追涨加仓</span>
+              <input id="quick-risk-chase-add" type="hidden" value="no" />
+              <div class="toggle-group" data-target="quick-risk-chase-add">
+                <button type="button" class="toggle-button is-active" data-value="no">否</button>
+                <button type="button" class="toggle-button" data-value="yes">是</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel quick-section quick-summary-panel">
+        <div class="quick-summary-grid">
+          <label class="field">
+            <span>今日总结（1句话）</span>
+            <textarea id="quick-summary" rows="3" placeholder="今天最大的问题不是题材，而是执行松了。"></textarea>
+          </label>
+          <label class="field">
+            <span>明日计划</span>
+            <input id="quick-plan" type="text" placeholder="明天我只做：热点龙头第一次放量回踩。" />
+          </label>
+        </div>
+        <div class="quick-result-grid">
+          <div class="penalty-box">
+            <span class="muted-text">今日处罚</span>
+            <strong id="quick-penalty-today">无</strong>
+          </div>
+          <div class="penalty-box danger-box">
+            <span class="muted-text">明日执行限制</span>
+            <strong id="quick-penalty-next">正常执行：单笔 ≤ 10%</strong>
+          </div>
+        </div>
+        <div class="action-row quick-action-row">
+          <button id="quick-save" type="button" class="primary-button">保存</button>
+          <button id="quick-export" type="button" class="ghost-button">导出 Markdown</button>
+          <a class="ghost-button link-button" href="./index.html">打开完整页</a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./quick.js"></script>
+  </body>
+  </html>

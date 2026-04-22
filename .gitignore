@@ -1,0 +1,5 @@
+.DS_Store
+*.log
+
+reviews/*.md
+!reviews/.gitkeep
