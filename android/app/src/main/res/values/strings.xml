@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">每日交易复盘</string>
+    <string name="review_channel_name">每日交易复盘提醒</string>
+    <string name="review_channel_description">每天 09:00 提醒填写交易复盘</string>
+    <string name="review_notification_title">每日交易复盘</string>
+    <string name="notification_enabled">安卓提醒已开启</string>
+    <string name="notification_denied">系统通知未开启</string>
+    <string name="external_open_failed">无法打开外部链接</string>
+</resources>
